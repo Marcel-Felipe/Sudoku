@@ -1,106 +1,194 @@
 package com.sudoku.sudoku;
 
-import static com.sudoku.models.Marcador.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
-import com.sudoku.models.Jogo;
+import com.sudoku.models.Celula;
+import com.sudoku.models.Marcador;
 import com.sudoku.models.Posicao;
 
 public class Sudoku {
-	public static void main(String[] args) {
-		Jogo jogo = new Jogo();
-		
-		primeiroJogo(jogo);
-		
-		System.out.println(jogo);
-		System.out.println("\n\n");
-		
-		for(int i = 0; i < 20; i++)
-			jogo.resolve();
-		
-		System.out.println(jogo);
+	
+	private final int TAMANHO_SUDOKU = 9;
+	
+	private List<List<Celula>> jogo = new ArrayList<>();
+
+	private List<List<List<Celula>>> backup = new ArrayList<>();
+	private List<List<Marcador>> resultados;
+	
+	public Sudoku(){
+		for(int linha = 1; linha <= TAMANHO_SUDOKU; linha++){
+			ArrayList<Celula> celulas = new ArrayList<>();
+			
+			for(int coluna = 1; coluna <= TAMANHO_SUDOKU; coluna++){
+				Posicao quadrante = quadranteBuilder(linha, coluna);
+				
+				Celula celula = new Celula(Posicao.byNumero(linha), Posicao.byNumero(coluna), quadrante);
+				celulas.add(celula);
+			}
+			
+			jogo.add(celulas);
+		}
 	}
 
-	private static void primeiroJogo(Jogo jogo) {
-		jogo.marcaNumero(CINCO, Posicao.UM, Posicao.UM);
-		jogo.marcaNumero(TRES, Posicao.UM, Posicao.DOIS);
-		jogo.marcaNumero(SETE, Posicao.UM, Posicao.CINCO);
+	private Posicao quadranteBuilder(int linha, int coluna) {
+		Posicao quadrante = null;
 		
-		jogo.marcaNumero(SEIS, Posicao.DOIS, Posicao.UM);
-		jogo.marcaNumero(UM, Posicao.DOIS, Posicao.QUATRO);
-		jogo.marcaNumero(NOVE, Posicao.DOIS, Posicao.CINCO);
-		jogo.marcaNumero(CINCO, Posicao.DOIS, Posicao.SEIS);
-
-		jogo.marcaNumero(NOVE, Posicao.TRES, Posicao.DOIS);
-		jogo.marcaNumero(OITO, Posicao.TRES, Posicao.TRES);
-		jogo.marcaNumero(SEIS, Posicao.TRES, Posicao.OITO);
-
-		jogo.marcaNumero(OITO, Posicao.QUATRO, Posicao.UM);
-		jogo.marcaNumero(SEIS, Posicao.QUATRO, Posicao.CINCO);
-		jogo.marcaNumero(TRES, Posicao.QUATRO, Posicao.NOVE);
-
-		jogo.marcaNumero(QUATRO, Posicao.CINCO, Posicao.UM);
-		jogo.marcaNumero(OITO, Posicao.CINCO, Posicao.QUATRO);
-		jogo.marcaNumero(TRES, Posicao.CINCO, Posicao.SEIS);
-		jogo.marcaNumero(UM, Posicao.CINCO, Posicao.NOVE);
-
-		jogo.marcaNumero(SETE, Posicao.SEIS, Posicao.UM);
-		jogo.marcaNumero(DOIS, Posicao.SEIS, Posicao.CINCO);
-		jogo.marcaNumero(SEIS, Posicao.SEIS, Posicao.NOVE);
-
-		jogo.marcaNumero(SEIS, Posicao.SETE, Posicao.DOIS);
-		jogo.marcaNumero(DOIS, Posicao.SETE, Posicao.SETE);
-		jogo.marcaNumero(OITO, Posicao.SETE, Posicao.OITO);
-		
-		jogo.marcaNumero(QUATRO, Posicao.OITO, Posicao.QUATRO);
-		jogo.marcaNumero(UM, Posicao.OITO, Posicao.CINCO);
-		jogo.marcaNumero(NOVE, Posicao.OITO, Posicao.SEIS);
-		jogo.marcaNumero(CINCO, Posicao.OITO, Posicao.NOVE);
-
-		jogo.marcaNumero(OITO, Posicao.NOVE, Posicao.CINCO);
-		jogo.marcaNumero(SETE, Posicao.NOVE, Posicao.OITO);
-		jogo.marcaNumero(NOVE, Posicao.NOVE, Posicao.NOVE);
+		if(Arrays.asList(Posicao.UM, Posicao.DOIS, Posicao.TRES).contains(Posicao.byNumero(linha))){
+			if(Arrays.asList(Posicao.UM, Posicao.DOIS, Posicao.TRES).contains(Posicao.byNumero(coluna))) quadrante = Posicao.UM;
+			if(Arrays.asList(Posicao.QUATRO, Posicao.CINCO, Posicao.SEIS).contains(Posicao.byNumero(coluna))) quadrante = Posicao.DOIS;
+			if(Arrays.asList(Posicao.SETE, Posicao.OITO, Posicao.NOVE).contains(Posicao.byNumero(coluna))) quadrante = Posicao.TRES;
+		}
+		if(Arrays.asList(Posicao.QUATRO, Posicao.CINCO, Posicao.SEIS).contains(Posicao.byNumero(linha))){
+			if(Arrays.asList(Posicao.UM, Posicao.DOIS, Posicao.TRES).contains(Posicao.byNumero(coluna))) quadrante = Posicao.QUATRO;
+			if(Arrays.asList(Posicao.QUATRO, Posicao.CINCO, Posicao.SEIS).contains(Posicao.byNumero(coluna))) quadrante = Posicao.CINCO;
+			if(Arrays.asList(Posicao.SETE, Posicao.OITO, Posicao.NOVE).contains(Posicao.byNumero(coluna))) quadrante = Posicao.SEIS;
+		}
+		if(Arrays.asList(Posicao.SETE, Posicao.OITO, Posicao.NOVE).contains(Posicao.byNumero(linha))){
+			if(Arrays.asList(Posicao.UM, Posicao.DOIS, Posicao.TRES).contains(Posicao.byNumero(coluna))) quadrante = Posicao.SETE;
+			if(Arrays.asList(Posicao.QUATRO, Posicao.CINCO, Posicao.SEIS).contains(Posicao.byNumero(coluna))) quadrante = Posicao.OITO;
+			if(Arrays.asList(Posicao.SETE, Posicao.OITO, Posicao.NOVE).contains(Posicao.byNumero(coluna))) quadrante = Posicao.NOVE;
+		}
+		return quadrante;
 	}
 	
-	private static void segundoJogo(Jogo jogo) {
-		jogo.marcaNumero(OITO, Posicao.UM, Posicao.UM);
-		jogo.marcaNumero(TRES, Posicao.UM, Posicao.TRES);
-		jogo.marcaNumero(SETE, Posicao.UM, Posicao.QUATRO);
-		jogo.marcaNumero(CINCO, Posicao.UM, Posicao.CINCO);
-		jogo.marcaNumero(DOIS, Posicao.UM, Posicao.NOVE);
-		
-		jogo.marcaNumero(OITO, Posicao.DOIS, Posicao.SEIS);
-		jogo.marcaNumero(SETE, Posicao.DOIS, Posicao.SETE);
-
-		jogo.marcaNumero(SETE, Posicao.TRES, Posicao.DOIS);
-		jogo.marcaNumero(QUATRO, Posicao.TRES, Posicao.QUATRO);
-		jogo.marcaNumero(TRES, Posicao.TRES, Posicao.SEIS);
-		jogo.marcaNumero(OITO, Posicao.TRES, Posicao.NOVE);
-		
-		jogo.marcaNumero(TRES, Posicao.QUATRO, Posicao.DOIS);
-		jogo.marcaNumero(OITO, Posicao.QUATRO, Posicao.TRES);
-		jogo.marcaNumero(DOIS, Posicao.QUATRO, Posicao.SETE);
-		jogo.marcaNumero(UM, Posicao.QUATRO, Posicao.NOVE);
+	public void marcaNumero(Marcador numero, Posicao linha, Posicao coluna){
+		Celula celula = jogo.get(linha.getValor() - 1).get(coluna.getValor() - 1);
+		celula.setValor(numero);
+	}
 	
-		jogo.marcaNumero(DOIS, Posicao.CINCO, Posicao.UM);
-		jogo.marcaNumero(SETE, Posicao.CINCO, Posicao.NOVE);
-
-		jogo.marcaNumero(UM, Posicao.SEIS, Posicao.UM);
-		jogo.marcaNumero(SETE, Posicao.SEIS, Posicao.TRES);
-		jogo.marcaNumero(NOVE, Posicao.SEIS, Posicao.SETE);
-		jogo.marcaNumero(QUATRO, Posicao.SEIS, Posicao.OITO);
+	public void soluciona() {
+		boolean isSolucionado = false;
 		
-		jogo.marcaNumero(TRES, Posicao.SETE, Posicao.UM);
-		jogo.marcaNumero(SEIS, Posicao.SETE, Posicao.QUATRO);
-		jogo.marcaNumero(CINCO, Posicao.SETE, Posicao.SEIS);
-		jogo.marcaNumero(SETE, Posicao.SETE, Posicao.OITO);
-		
-		jogo.marcaNumero(QUATRO, Posicao.OITO, Posicao.TRES);
-		jogo.marcaNumero(NOVE, Posicao.OITO, Posicao.QUATRO);
+		while(!isSolucionado){
+			this.resultados = calcula();
+			if(this.resultados.isEmpty()) isSolucionado = true;
+			
+			long qtdCelulasSolucionadas = this.resultados.stream().filter(lista -> lista.size() == 1).count();
+			if(qtdCelulasSolucionadas == 0)
+				chuta();
+			
+			long possibilidadesImpossiveis = this.resultados.stream().filter(lista -> lista.isEmpty()).count();
+			if(possibilidadesImpossiveis > 0){
+				this.jogo = copiaJogo(backup.get(0));
+			}
+		}
 
-		jogo.marcaNumero(SETE, Posicao.NOVE, Posicao.UM);
-		jogo.marcaNumero(DOIS, Posicao.NOVE, Posicao.CINCO);
-		jogo.marcaNumero(QUATRO, Posicao.NOVE, Posicao.SEIS);
-		jogo.marcaNumero(CINCO, Posicao.NOVE, Posicao.SETE);
-		jogo.marcaNumero(SEIS, Posicao.NOVE, Posicao.NOVE);
+	}
+
+	private void chuta() {
+		backup.add(copiaJogo(jogo));
+
+		for(List<Celula> celulas : jogo)
+			for(Celula celula : celulas)
+				if(celula.getValor() == null){
+					List<Marcador> valores = calcula(celula);
+					if(valores.size() == 2){
+						celula.setValor(valores.get(new Random().nextInt(valores.size())));
+						return;
+					}
+				}
+	}
+
+	private List<List<Celula>> copiaJogo(List<List<Celula>> antigo) {
+		List<List<Celula>> novo = new ArrayList<>();
+		
+		for(int linha = 0; linha < TAMANHO_SUDOKU; linha++){
+			ArrayList<Celula> celulas = new ArrayList<>();
+			
+			for(int coluna = 0; coluna < TAMANHO_SUDOKU; coluna++){
+				Celula celula = antigo.get(linha).get(coluna);
+				Celula novaCelula = new Celula(celula.getLinha(), celula.getColuna(), celula.getQuadrante());
+				novaCelula.setValor(celula.getValor());
+				
+				celulas.add(novaCelula);
+			}
+			novo.add(celulas);
+		}
+		
+		return novo;
+	}
+
+	private List<List<Marcador>> calcula() {
+		List<List<Marcador>> resultados = new ArrayList<>();
+		
+		for(List<Celula> celulas : jogo){
+			for(Celula celula : celulas){
+				if(celula.getValor() == null){
+					List<Marcador> valores = calcula(celula);
+					if(valores.size() == 1) celula.setValor(valores.get(0));
+					resultados.add(valores);
+				}
+			}
+		}
+		
+		return resultados;
+	}
+	
+	private List<Marcador> calcula(Celula celula){
+		List<Marcador> valores = new ArrayList<>(Arrays.asList(Marcador.values()));
+		
+		valores.removeAll(numerosNaLinhaDa(celula));
+		valores.removeAll(numerosNaColunaDa(celula));
+		valores.removeAll(numerosNoQuadranteDa(celula));
+		
+		return valores;
+	}
+	
+	private List<Marcador> numerosNaLinhaDa(Celula celula){
+		List<Celula> linha = jogo.get(celula.getLinha().getValor() -1);
+		List<Marcador> numeros = new ArrayList<>();
+		
+		for(Celula elemento : linha) 
+			if(elemento.getValor() != null)
+				numeros.add(elemento.getValor());
+		
+		return numeros;
+	}
+	
+	private List<Marcador> numerosNaColunaDa(Celula celula){
+		List<Marcador> numeros = new ArrayList<>();
+		
+		for(List<Celula> coluna : jogo){
+			Celula elemento = coluna.get(celula.getColuna().getValor() -1);
+			if(elemento.getValor() != null) 
+				numeros.add(elemento.getValor());
+		}
+		
+		return numeros;
+	}
+	
+	private List<Marcador> numerosNoQuadranteDa(Celula celula){
+		List<Marcador> numeros = new ArrayList<>();
+		
+		for(List<Celula> elementos : jogo)
+			for(Celula elemento : elementos)
+				if(celula.getQuadrante() == elemento.getQuadrante())
+					if(elemento.getValor() != null) 
+						numeros.add(elemento.getValor());
+						
+		return numeros;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder string = new StringBuilder();
+		
+		for(List<Celula> celulas : jogo){
+			for(Celula celula: celulas){
+				string.append(celula.getValor() == null ? "_" : celula.getValor().getPeso());
+				string.append(" ");
+				
+				if(celula.getColuna() == Posicao.TRES || celula.getColuna() == Posicao.SEIS)
+					string.append("   ");
+			}
+			string.append("\n");
+			if(celulas.get(0).getLinha() == Posicao.TRES ||celulas.get(0).getLinha() == Posicao.SEIS)
+				string.append("\n");
+		}
+		
+		return string.toString();
 	}
 }
