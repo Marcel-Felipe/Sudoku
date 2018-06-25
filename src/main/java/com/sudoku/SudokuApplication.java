@@ -1,4 +1,4 @@
-package com.sudoku.sudoku;
+package com.sudoku;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

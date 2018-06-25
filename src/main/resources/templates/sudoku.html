@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1"/>
+		<title>Sudoku</title>
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" >
+		<link rel="stylesheet" type="text/css" href="css/sudoku.css">
+	</head>
+	<body>
+		<div class="jumbotron">
+		  <h1 class="display-4 text-center">Sudoku</h1>
+		  <hr/>
+		</div>
+		
+		<div class="container">
+			<div class="row justify-content-center">
+	    		<div class="col-8">
+					<table class="table table-bordered">
+					  <tbody>
+					    <tr th:each="celulas,linha : ${jogo}" th:class="${linha.count == 3} OR ${linha.count == 6}? 'borda-bottom'">
+					      <td th:each="celula,coluna : ${celulas}" class="text-center" th:classappend="${coluna.count == 3} OR ${coluna.count == 6}? 'borda-right'">
+					      	<span th:if="${celula.valor != null}" th:text="${celula.valor.peso}"></span>
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>
+	    		</div>
+			</div>
+			<div class="row justify-content-center">
+				<a class="btn btn-outline-primary btn-lg btn-block col-3" href="/resolver" role="button">Solucionar</a>
+				<div class ="col-1"></div>
+    			<a class="btn btn-outline-primary btn-lg btn-block col-3" href="/limpar" role="button">Limpar</a>
+			</div>
+		</div>
+	</body>
+</html>

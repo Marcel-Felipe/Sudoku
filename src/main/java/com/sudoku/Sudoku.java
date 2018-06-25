@@ -1,4 +1,4 @@
-package com.sudoku.sudoku;
+package com.sudoku;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +52,10 @@ public class Sudoku {
 			if(Arrays.asList(Posicao.SETE, Posicao.OITO, Posicao.NOVE).contains(Posicao.byNumero(coluna))) quadrante = Posicao.NOVE;
 		}
 		return quadrante;
+	}
+	
+	public List<List<Celula>> getJogo() {
+		return jogo;
 	}
 	
 	public void marcaNumero(Marcador numero, Posicao linha, Posicao coluna){

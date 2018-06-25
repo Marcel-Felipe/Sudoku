@@ -1,4 +1,4 @@
-package com.sudoku.sudoku;
+package com.sudoku;
 
 import static com.sudoku.models.Marcador.*;
 
@@ -18,7 +18,7 @@ public class SudokuResolver {
 		System.out.println("\n\n");
 	}
 
-	private static void primeiroJogo(Sudoku jogo) {
+	public static void primeiroJogo(Sudoku jogo) {
 		jogo.marcaNumero(CINCO, Posicao.UM, Posicao.UM);
 		jogo.marcaNumero(TRES, Posicao.UM, Posicao.DOIS);
 		jogo.marcaNumero(SETE, Posicao.UM, Posicao.CINCO);
