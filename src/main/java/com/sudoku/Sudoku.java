@@ -135,8 +135,7 @@ public class Sudoku {
 	}
 	
 	private List<Marcador> calcula(Celula celula){
-		List<Marcador> valores = new ArrayList<>(Arrays.asList(Marcador.values()));
-		valores.remove(Marcador.VAZIO);
+		List<Marcador> valores = Marcador.valores();
 		
 		valores.removeAll(numerosNaLinhaDa(celula));
 		valores.removeAll(numerosNaColunaDa(celula));

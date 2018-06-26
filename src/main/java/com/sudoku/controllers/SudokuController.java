@@ -22,7 +22,7 @@ public class SudokuController {
 		SudokuResolver.segundoJogo(sudoku);
 		
 		model.addAttribute("sudoku", sudoku);
-		model.addAttribute("numeros", Marcador.values());
+		model.addAttribute("numeros", Marcador.valores());
 		
 		return "sudoku";
 	}
@@ -33,7 +33,7 @@ public class SudokuController {
 		resultado.soluciona();
 		System.out.println(resultado);
 		model.addAttribute("sudoku", resultado);
-		model.addAttribute("numeros", Marcador.values());
+		model.addAttribute("numeros", Marcador.valores());
 		
 		return "sudoku";
 	}

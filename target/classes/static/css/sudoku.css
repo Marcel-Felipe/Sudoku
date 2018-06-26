@@ -9,6 +9,8 @@
 .borda-selecao {
 	border: 0px solid #ffff	!important;
 	background: none;
+	padding: 0 !important;
+	padding-left: 10px !important;
 }
 
 .numero-em-vermelho {
