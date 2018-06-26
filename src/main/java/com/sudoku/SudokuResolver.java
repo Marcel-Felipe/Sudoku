@@ -59,7 +59,7 @@ public class SudokuResolver {
 		jogo.marcaNumero(NOVE, Posicao.NOVE, Posicao.NOVE);
 	}
 	
-	private static void segundoJogo(Sudoku jogo) {
+	public static void segundoJogo(Sudoku jogo) {
 		jogo.marcaNumero(OITO, Posicao.UM, Posicao.UM);
 		jogo.marcaNumero(TRES, Posicao.UM, Posicao.TRES);
 		jogo.marcaNumero(SETE, Posicao.UM, Posicao.QUATRO);

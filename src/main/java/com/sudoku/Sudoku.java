@@ -87,7 +87,7 @@ public class Sudoku {
 
 		for(List<Celula> celulas : jogo)
 			for(Celula celula : celulas)
-				if(celula.getValor() == null){
+				if(celula.getValor() == Marcador.VAZIO){
 					List<Marcador> valores = calcula(celula);
 					if(valores.size() == 2){
 						celula.setValor(valores.get(new Random().nextInt(valores.size())));
@@ -120,7 +120,7 @@ public class Sudoku {
 		
 		for(List<Celula> celulas : jogo){
 			for(Celula celula : celulas){
-				if(celula.getValor() == null){
+				if(celula.getValor() == Marcador.VAZIO){
 					List<Marcador> valores = calcula(celula);
 					if(valores.size() == 1) celula.setValor(valores.get(0));
 					resultados.add(valores);
@@ -133,6 +133,7 @@ public class Sudoku {
 	
 	private List<Marcador> calcula(Celula celula){
 		List<Marcador> valores = new ArrayList<>(Arrays.asList(Marcador.values()));
+		valores.remove(Marcador.VAZIO);
 		
 		valores.removeAll(numerosNaLinhaDa(celula));
 		valores.removeAll(numerosNaColunaDa(celula));
@@ -182,7 +183,7 @@ public class Sudoku {
 		
 		for(List<Celula> celulas : jogo){
 			for(Celula celula: celulas){
-				string.append(celula.getValor() == null ? "_" : celula.getValor().getPeso());
+				string.append(celula.getValor() == Marcador.VAZIO ? "_" : celula.getValor().getPeso());
 				string.append(" ");
 				
 				if(celula.getColuna() == Posicao.TRES || celula.getColuna() == Posicao.SEIS)

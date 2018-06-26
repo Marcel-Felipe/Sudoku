@@ -1,14 +1,14 @@
 package com.sudoku.controllers;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sudoku.Sudoku;
 import com.sudoku.SudokuResolver;
-import com.sudoku.models.Celula;
+import com.sudoku.models.Marcador;
 
 @Controller
 public class SudokuController {
@@ -19,26 +19,22 @@ public class SudokuController {
 	public String index(Model model){
 		sudoku = new Sudoku();
 		
-		SudokuResolver.primeiroJogo(sudoku);
-		List<List<Celula>> jogo = sudoku.getJogo();
+		SudokuResolver.segundoJogo(sudoku);
 		
-		model.addAttribute("jogo", jogo);
+		model.addAttribute("sudoku", sudoku);
+		model.addAttribute("numeros", Marcador.values());
+		
 		return "sudoku";
 	}
 	
-	@GetMapping("/resolver")
-	public String resolver(Model model){
-		sudoku.soluciona();
-		model.addAttribute("jogo", sudoku.getJogo());
-		return "sudoku";
-	}
-	
-	@GetMapping("/limpar")
-	public String limpar(Model model){
-		sudoku = new Sudoku();
-		List<List<Celula>> jogo = sudoku.getJogo();
+	@PostMapping("/resolver")
+	public String resolver(@ModelAttribute Sudoku resultado, Model model){
+		System.out.println(resultado);
+		resultado.soluciona();
+		System.out.println(resultado);
+		model.addAttribute("sudoku", resultado);
+		model.addAttribute("numeros", Marcador.values());
 		
-		model.addAttribute("jogo", jogo);
 		return "sudoku";
 	}
 }

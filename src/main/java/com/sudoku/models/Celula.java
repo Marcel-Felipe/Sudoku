@@ -15,9 +15,10 @@ public class Celula {
 	}
 
 	public void setValor(Marcador valor) {
-		this.valor = valor;
+		if(valor != null)
+			this.valor = valor;
 	}
-
+	
 	public Posicao getLinha() {
 		return linha;
 	}
@@ -32,5 +33,5 @@ public class Celula {
 
 	public Marcador getValor() {
 		return valor;
-	}	
+	}
 }
