@@ -122,7 +122,10 @@ public class Sudoku {
 			for(Celula celula : celulas){
 				if(celula.getValor() == Marcador.VAZIO){
 					List<Marcador> valores = calcula(celula);
-					if(valores.size() == 1) celula.setValor(valores.get(0));
+					if(valores.size() == 1){
+						celula.setValor(valores.get(0));
+						celula.setCalculado();
+					}
 					resultados.add(valores);
 				}
 			}

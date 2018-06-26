@@ -10,3 +10,7 @@
 	border: 0px solid #ffff	!important;
 	background: none;
 }
+
+.numero-em-vermelho {
+	color: #ff0018 !important;
+}

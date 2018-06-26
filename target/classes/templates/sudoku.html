@@ -21,7 +21,8 @@
 						  <tbody>
 						    <tr th:each="celulas,linha : *{jogo}" th:class="${linha.count == 3} OR ${linha.count == 6}? 'borda-bottom'">
 						      <td th:each="celula,coluna : ${celulas}" class="text-center" th:classappend="${coluna.count == 3} OR ${coluna.count == 6}? 'borda-right'">
-						      	<select class="custom-select borda-selecao" th:field="*{jogo[__${linha.index}__][__${coluna.index}__].valor}">
+						      	<select class="custom-select borda-selecao" th:field="*{jogo[__${linha.index}__][__${coluna.index}__].valor}" 
+						      			th:classappend="${celula.calculado}? 'numero-em-vermelho'">
 								  <option th:value="VAZIO"> </option>
 								  <option th:each="numero : ${numeros}" th:value="${numero}" th:text="${numero.peso}"></option>
 								</select>

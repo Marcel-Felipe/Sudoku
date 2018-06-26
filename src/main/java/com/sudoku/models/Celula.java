@@ -7,6 +7,8 @@ public class Celula {
 	private final Posicao quadrante;
 	
 	private Marcador valor;
+	
+	private boolean calculado = false;
 
 	public Celula(Posicao linha, Posicao coluna, Posicao quadrante) {
 		this.linha = linha;
@@ -33,5 +35,13 @@ public class Celula {
 
 	public Marcador getValor() {
 		return valor;
+	}
+
+	public boolean isCalculado() {
+		return calculado;
+	}
+	
+	public void setCalculado() {
+		this.calculado = true;
 	}
 }
