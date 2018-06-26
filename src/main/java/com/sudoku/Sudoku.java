@@ -65,8 +65,11 @@ public class Sudoku {
 	
 	public void soluciona() {
 		boolean isSolucionado = false;
+		int tentativas = 0;
 		
-		while(!isSolucionado){
+		while(!isSolucionado && tentativas < 1000){
+			tentativas++;
+			
 			this.resultados = calcula();
 			if(this.resultados.isEmpty()) isSolucionado = true;
 			
